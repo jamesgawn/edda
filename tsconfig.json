@@ -1,0 +1,26 @@
+{
+  "ts-node": {
+    // these options are overrides used only by ts-node
+    // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
+  "compilerOptions": {
+		"module": "esnext",
+		"target": "esnext",
+		"lib": ["esnext"],
+		"strict": true,
+    "declaration": true,
+    "sourceMap": true,
+		"moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "composite": true,
+    "types": [],
+    "rootDir": "src",
+    "outDir": "dist"
+	},
+  "exclude": ["**/node_modules", "**/dist", "node_modules", "dist", "test"]
+}
