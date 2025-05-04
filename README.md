@@ -1,7 +1,6 @@
 # Elite Dangerous Discovery Announcer
 
 
-
 ## Notes
 
 Boop -> FFS Discovery Scan
