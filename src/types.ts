@@ -56,31 +56,8 @@ export interface EDDNFSSDiscoveryScanEvent extends EDDNGenericEvent {
 }
 
 interface JournalScanEventMessage extends EDDNGenericMessage {
-  ScanType: string
-}
-
-export interface EDDNJournalScanEvent extends EDDNGenericEvent {
-  message: JournalScanEventMessage
-}
-
-interface Material {
-  Name: string,
-  Percent: number
-}
-
-interface Ring {
-  InnerRad: number,
-  MassMT: number,
-  Name: string,
-  OuterRad: number,
-  RingClass: string
-}
-
-export interface EDDNJournalDetailedScanEvent extends EDDNJournalScanEvent {
-  message: {
     AscendingNode: number,
     Atmosphere: string,
-    AtmosphereComposition: Material[],
     AtmosphereType: string,
     AxialTilt: number,
     BodyID: number,
@@ -104,6 +81,7 @@ export interface EDDNJournalDetailedScanEvent extends EDDNJournalScanEvent {
     ReserveLevel: string,
     Rings: Ring[],
     RotationPeriod: number,
+    ScanType: string,
     SemiMajorAxis: number,
     StarPos: number[],
     StarSystem: string,
@@ -117,6 +95,33 @@ export interface EDDNJournalDetailedScanEvent extends EDDNJournalScanEvent {
     Volcanism: string,
     WasDiscovered: boolean,
     WasMapped: boolean
+}
+
+export interface EDDNJournalScanEvent extends EDDNGenericEvent {
+  message: JournalScanEventMessage
+}
+
+interface Material {
+  Name: string,
+  Percent: number
+}
+
+interface Ring {
+  InnerRad: number,
+  MassMT: number,
+  Name: string,
+  OuterRad: number,
+  RingClass: string
+}
+
+export interface EDDNJournalDetailedScanEvent extends EDDNJournalScanEvent {
+  message: {
+    AtmosphereComposition: Material[],
+  } & JournalScanEventMessage
+}
+
+export interface EDDNJournalAutoScanEvent extends EDDNJournalScanEvent {
+  message: {
   } & JournalScanEventMessage
 }
 

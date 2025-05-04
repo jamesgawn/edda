@@ -1,56 +1,61 @@
 import * as zlib from 'zlib';
 import * as zmq from 'zeromq';
-import { EDDNFSSAllBodiesFoundEvent, EDDNFSSBodySignalsEvent, EDDNFSSDiscoveryScanEvent, EDDNGenericEvent, EDDNJournalDetailedScanEvent, EDDNJournalSAASignalsFoundEvent, EDDNJournalScanEvent, EDDNJournalSSAScanCompleteEvent } from "./types";
-import { logDeep } from './utils';
-import { deepEqual } from 'assert';
-import { log } from 'console';
+import { EDDNFSSAllBodiesFoundEvent, EDDNFSSBodySignalsEvent, EDDNFSSDiscoveryScanEvent, EDDNGenericEvent, EDDNJournalAutoScanEvent, EDDNJournalDetailedScanEvent, EDDNJournalSAASignalsFoundEvent, EDDNJournalScanEvent, EDDNJournalSSAScanCompleteEvent } from "./types";
+import pino from 'pino'
 
 const SOURCE_URL = 'tcp://eddn.edcd.io:9500';
+const logger = pino({
+  level: process.env.LOG_LEVEL || 'debug',
+},pino.destination({
+  minLength: 1024, // Buffer before writing
+  sync: false // Asynchronous logging
+}));
 
 async function run() {
   const sock = new zmq.Subscriber;
 
   sock.connect(SOURCE_URL);
   sock.subscribe('');
-  console.log('EDDN listener connected to:', SOURCE_URL);
+  logger.info('EDDN listener connected to:', SOURCE_URL);
 
   for await (const [src] of sock) {
     const event = JSON.parse(zlib.inflateSync(Buffer.from(src as any, 'base64')).toString()) as EDDNGenericEvent;
+    logger.trace(event, "Received event from EDDN");
 
     switch (event.$schemaRef) {
       // System discovery scan
       case "https://eddn.edcd.io/schemas/fssdiscoveryscan/1":
         processEDDNFSSDiscoveryScanEvent(event as EDDNFSSDiscoveryScanEvent)
         break;
-      // Bodies found in system
+      // Completed detailed scan of Bodies found in system
         case "https://eddn.edcd.io/schemas/fssallbodiesfound/1": 
         processEDDNFSSAllBodiesFoundEvent(event as EDDNFSSAllBodiesFoundEvent);
         break;
       case "https://eddn.edcd.io/schemas/fssbodysignals/1": 
         processEDDNFSSBodySignalsEvent(event as EDDNFSSBodySignalsEvent)
         break;
-      case "https://eddn.edcd.io/schemas/fsssignaldiscovered/1":
-        // logDeep(event);
-        break;
       case "https://eddn.edcd.io/schemas/journal/1":
         processEDDNJournalEvent(event as EDDNGenericEvent)
         break;
+      case "https://eddn.edcd.io/schemas/fsssignaldiscovered/1":
       default: 
-        //console.log(event.message.event)
+        logger.trace("Received unsupported event type" + event.$schemaRef);
     }
   }
 }
 
 async function processEDDNFSSAllBodiesFoundEvent (event: EDDNFSSAllBodiesFoundEvent) { 
-  console.log("Completed system scan in " + event.message.SystemName);
+  logger.info("Completed system scan in " + event.message.SystemName);
+  // TODO: Add system to capture completed system scans.
 }
 
 async function processEDDNFSSBodySignalsEvent (event: EDDNFSSBodySignalsEvent) { 
-  //logDeep(event);
+  logger.trace("Scanned " + event.message.BodyName + ". Found " + event.message.Signals.length + " signals.");
 }
 
 async function processEDDNFSSDiscoveryScanEvent (event: EDDNFSSDiscoveryScanEvent) { 
-  console.log("Booped " + event.message.SystemName + "" + ". Found " + event.message.BodyCount + " bodies and " + event.message.NonBodyCount + " non-bodies.");
+  logger.info("Booped " + event.message.SystemName + "" + ". Found " + event.message.BodyCount + " bodies and " + event.message.NonBodyCount + " non-bodies.");
+  // TODO: Add system to capture system boop events.
 }
 
 async function processEDDNJournalEvent (event: EDDNGenericEvent) {
@@ -61,6 +66,8 @@ async function processEDDNJournalEvent (event: EDDNGenericEvent) {
     case "SAASignalsFound":
       processEDDNJournalSAASignalsFoundEvent(event as EDDNJournalSAASignalsFoundEvent);
       break;
+    default: 
+      logger.trace("Received unsupported journal event:" + event.message.event)
   }
 }
 
@@ -70,28 +77,36 @@ async function processEDDNJournalScanEvent (event: EDDNJournalScanEvent) {
       processEDDNJourneyDetailedScanEvent(event as EDDNJournalDetailedScanEvent);
       break;
     case "AutoScan":
-      // logDeep(event);
+      processEDDNJourneyAutoScanEvent(event as EDDNJournalAutoScanEvent);
       break;
     case "NavBeaconDetail":
-      // Don't need to do anything with this yet.
-      break;
     default:
-      console.log("Scan type " + event.message.ScanType + " not supported.");
+      logger.trace("Received unsupported scan type " + event.message.ScanType);
       break;
   }
 }
 
 async function processEDDNJourneyDetailedScanEvent(event: EDDNJournalDetailedScanEvent){
-  // Completed mapping a body.
+  processEDDNJourneyScanEvent(event);
+}
+
+async function processEDDNJourneyAutoScanEvent(event: EDDNJournalAutoScanEvent) {
+  processEDDNJourneyScanEvent(event);
+}
+
+async function processEDDNJourneyScanEvent(event: EDDNJournalScanEvent) {
+  // Completed scan of body
   if (event.message.PlanetClass != undefined) {
-    console.log("Mapped " + event.message.BodyName + " (" + event.message.PlanetClass + ")");
+    logger.info("Scanned " + event.message.BodyName + " (" + event.message.PlanetClass + "). Discovered:" + event.message.WasDiscovered + ", Mapped:" + event.message.WasMapped);
   } else if (event.message.StarType != undefined) {
-    console.log("Mapped " + event.message.BodyName + " (Star Type " + event.message.StarType + ")");
+    logger.info("Scanned " + event.message.BodyName + " (Star Type " + event.message.StarType + ")");
   }
+
+  // TODO: Add system to capture body scan events.
 }
 
 async function processEDDNJournalSAASignalsFoundEvent(event: EDDNJournalSAASignalsFoundEvent) {
-  console.log("Scanned " + event.message.BodyName + ". Found " + event.message.Signals.length + " signals.");
+  logger.trace("Scanned " + event.message.BodyName + ". Found " + event.message.Signals.length + " signals.");
 }
 
 run();
