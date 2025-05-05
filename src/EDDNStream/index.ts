@@ -2,10 +2,13 @@ import { Logger } from 'pino'
 import * as zlib from 'zlib';
 import * as zmq from 'zeromq';
 import { EDDNFSSAllBodiesFoundEvent, EDDNFSSBodySignalsEvent, EDDNFSSDiscoveryScanEvent, EDDNGenericEvent, EDDNJournalAutoScanEvent, EDDNJournalDetailedScanEvent, EDDNJournalSAASignalsFoundEvent, EDDNJournalScanEvent, EDDNJournalSSAScanCompleteEvent } from "./types";
+import { EventEmitter } from '../utils/EventEmitter';
+
 
 export class EDDNStream {
   private logger: Logger;
   private sourceUrl: string;
+  public eventEmitter: EventEmitter<{allBodiesFound: EDDNFSSAllBodiesFoundEvent}> = new EventEmitter();
 
   constructor(logger: Logger, sourceUrl = 'tcp://eddn.edcd.io:9500') {
     this.logger = logger.child({ module: "EDDNStream" });
@@ -50,6 +53,7 @@ export class EDDNStream {
   private async processEDDNFSSAllBodiesFoundEvent (event: EDDNFSSAllBodiesFoundEvent) { 
     this.logger.info("Completed system scan in " + event.message.SystemName);
     // TODO: Add system to capture completed system scans.
+    this.eventEmitter.emit("allBodiesFound", event);
   }
 
   private async processEDDNFSSBodySignalsEvent (event: EDDNFSSBodySignalsEvent) { 

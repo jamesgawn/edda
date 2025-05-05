@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@whatwg-node/server": "^0.10.5",
+    "itty-router": "^5.0.18",
     "pino": "^9.6.0",
     "zeromq": "^6.3.0"
   },
