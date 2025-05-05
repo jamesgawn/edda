@@ -3,7 +3,6 @@ import { EDDNStream } from './EDDNStream';
 import { createServerAdapter } from '@whatwg-node/server'
 import { createServer } from 'http'
 import { AutoRouter } from 'itty-router'
-import { logDeep } from './utils';
 
 // Setup Logging
 const logger = pino({
