@@ -3,6 +3,7 @@ import { EDDNStream } from './EDDNStream';
 import { createServerAdapter } from '@whatwg-node/server'
 import { createServer } from 'http'
 import { AutoRouter } from 'itty-router'
+import { Server } from 'socket.io';
 
 // Setup Logging
 const logger = pino({
@@ -12,6 +13,9 @@ const logger = pino({
   sync: false
 }));
 
+// Setup HTTP Server
+const httpServerPort = process.env.LOG_LEVEL || 3001;
+
 // Setup data feed from EDDN
 const SOURCE_URL = 'tcp://eddn.edcd.io:9500';
 const eDDNStream = new EDDNStream(logger, SOURCE_URL);
@@ -20,13 +24,32 @@ const eDDNStream = new EDDNStream(logger, SOURCE_URL);
 const router = AutoRouter();
 router.get('/ping', () => ("pong"));
 const ittyServer = createServerAdapter(router.fetch)
+const httpServer = createServer(ittyServer)
+
+// Setup SocketIO Stream
+const io = new Server(httpServer, { /* options */ });
+io.on("connection", (socket) => {
+  logger.info('Client connected');
+});
+io.on("disconnect", (socket) => {
+  logger.info('Client disconnected');
+});
+
+// Setup EDDN Stream to Socket IO Stream
+eDDNStream.eventEmitter.addHandler("EDDNSystemBoop", (data) => {
+  io.emit("EDDNSystemBoop", data);
+})
+eDDNStream.eventEmitter.addHandler("EDDNPlanetScan", (data) => {
+  io.emit("EDDNPlanetScan", data);
+})
+eDDNStream.eventEmitter.addHandler("EDDNSystemScanCompleted", (data) => {
+  io.emit("EDDNSystemScanCompleted", data);
+})
 
 async function  run() {
   try {
     eDDNStream.start();
     
-    const httpServerPort = process.env.LOG_LEVEL || 3001;
-    const httpServer = createServer(ittyServer)
     httpServer.listen(httpServerPort)
     logger.info('Server listening on http://localhost:' + httpServerPort);
 

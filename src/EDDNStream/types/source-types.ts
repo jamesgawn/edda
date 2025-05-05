@@ -56,18 +56,41 @@ export interface EDDNFSSDiscoveryScanEvent extends EDDNGenericEvent {
 }
 
 interface JournalScanEventMessage extends EDDNGenericMessage {
+  AxialTilt: number,
+  BodyID: number,
+  BodyName: string,
+  PlanetClass?: string,
+  RotationPeriod: number,
+  ScanType: string,
+  StarPos: number[],
+  StarSystem: string,
+  StarType?: string,
+  SurfaceTemperature: number,
+  SystemAddress: number,
+  WasDiscovered: boolean,
+  WasMapped: boolean
+}
+
+interface JournalScanStarEventMessage extends JournalScanEventMessage {
+  AbsoluteMagnitude: number,
+  Age_MY: number,
+  Luminosity: string,
+  StarType: string,
+  StellarMass: number,
+  Subclass: number,
+}
+
+interface JournalScanPlanetEventMessage extends JournalScanEventMessage {
     AscendingNode: number,
     Atmosphere: string,
     AtmosphereType: string,
-    AxialTilt: number,
-    BodyID: number,
-    BodyName: string,
+    DistanceFromArrivalLS: number,
+    Radius: number,
     Composition: {
       Ice: number,
       Metal: number,
       Rock: number
     },
-    DistanceFromArrivalLS: number,
     Eccentricity: number,
     Landable: boolean,
     MassEM: number,
@@ -76,29 +99,24 @@ interface JournalScanEventMessage extends EDDNGenericMessage {
     OrbitalInclination: number,
     OrbitalPeriod: number,
     Periapsis: number,
-    PlanetClass?: string,
-    Radius: number,
+    PlanetClass: string,
     ReserveLevel: string,
     Rings: Ring[],
-    RotationPeriod: number,
     ScanType: string,
     SemiMajorAxis: number,
-    StarPos: number[],
-    StarSystem: string,
-    StarType?: string,
     SurfaceGravity: number,
     SurfacePressure: number,
-    SurfaceTemperature: number,
-    SystemAddress: number,
     TerraformState: string,
     TidalLock: boolean,
     Volcanism: string,
-    WasDiscovered: boolean,
-    WasMapped: boolean
 }
 
 export interface EDDNJournalScanEvent extends EDDNGenericEvent {
   message: JournalScanEventMessage
+}
+
+export interface EDDNJournalScanPlanetEvent extends EDDNGenericEvent {
+  message: JournalScanPlanetEventMessage
 }
 
 interface Material {

@@ -1,14 +1,23 @@
 import { Logger } from 'pino'
 import * as zlib from 'zlib';
 import * as zmq from 'zeromq';
-import { EDDNFSSAllBodiesFoundEvent, EDDNFSSBodySignalsEvent, EDDNFSSDiscoveryScanEvent, EDDNGenericEvent, EDDNJournalAutoScanEvent, EDDNJournalDetailedScanEvent, EDDNJournalSAASignalsFoundEvent, EDDNJournalScanEvent, EDDNJournalSSAScanCompleteEvent } from "./types";
+import { EDDNFSSAllBodiesFoundEvent, EDDNFSSBodySignalsEvent, EDDNFSSDiscoveryScanEvent, EDDNGenericEvent, EDDNJournalAutoScanEvent, EDDNJournalDetailedScanEvent, EDDNJournalSAASignalsFoundEvent, EDDNJournalScanEvent, EDDNJournalScanPlanetEvent } from "./types/source-types";
 import { EventEmitter } from '../utils/EventEmitter';
-
+import { fromEDDNFSSAllBodiesFoundEvent } from './adapters/EDDNSystemScanCompletedEventAdapter';
+import { EDDNSystemScanCompletedEvent } from './types/EDDNSystemScanCompletedEvent';
+import { EDDNSystemBoopEvent } from './types/EDDNSystemBoopEvent';
+import { logDeep } from '../utils';
+import { EDDNPlanetScanEvent } from './types/EDDNPlanetScanEvent';
+import { fromJournalScanPlanetEventMessage } from './adapters/EDDNPlanetScanEventAdapter';
+import { fromEDDNFSSDiscoveryScanEvent } from './adapters/EDDNSystemBoopEventAdapter';
 
 export class EDDNStream {
   private logger: Logger;
   private sourceUrl: string;
-  public eventEmitter: EventEmitter<{allBodiesFound: EDDNFSSAllBodiesFoundEvent}> = new EventEmitter();
+  public eventEmitter: EventEmitter<{EDDNSystemScanCompleted: EDDNSystemScanCompletedEvent, 
+                                      EDDNSystemBoop: EDDNSystemBoopEvent,
+                                      EDDNPlanetScan: EDDNPlanetScanEvent
+                                    }> = new EventEmitter();
 
   constructor(logger: Logger, sourceUrl = 'tcp://eddn.edcd.io:9500') {
     this.logger = logger.child({ module: "EDDNStream" });
@@ -52,8 +61,7 @@ export class EDDNStream {
 
   private async processEDDNFSSAllBodiesFoundEvent (event: EDDNFSSAllBodiesFoundEvent) { 
     this.logger.info("Completed system scan in " + event.message.SystemName);
-    // TODO: Add system to capture completed system scans.
-    this.eventEmitter.emit("allBodiesFound", event);
+    this.eventEmitter.emit("EDDNSystemScanCompleted", fromEDDNFSSAllBodiesFoundEvent(event));
   }
 
   private async processEDDNFSSBodySignalsEvent (event: EDDNFSSBodySignalsEvent) { 
@@ -62,7 +70,7 @@ export class EDDNStream {
   
   private async processEDDNFSSDiscoveryScanEvent (event: EDDNFSSDiscoveryScanEvent) { 
     this.logger.info("Booped " + event.message.SystemName + "" + ". Found " + event.message.BodyCount + " bodies and " + event.message.NonBodyCount + " non-bodies.");
-    // TODO: Add system to capture system boop events.
+    this.eventEmitter.emit("EDDNSystemBoop", fromEDDNFSSDiscoveryScanEvent(event));
   }
   
   private async processEDDNJournalEvent (event: EDDNGenericEvent) {
@@ -104,12 +112,11 @@ export class EDDNStream {
   private async processEDDNJourneyScanEvent(event: EDDNJournalScanEvent) {
     // Completed scan of body
     if (event.message.PlanetClass != undefined) {
-      this.logger.info("Scanned " + event.message.BodyName + " (" + event.message.PlanetClass + "). Discovered:" + event.message.WasDiscovered + ", Mapped:" + event.message.WasMapped);
+      this.logger.info("Scanned " + event.message.BodyName + " (" + event.message.PlanetClass + ")");
+      this.eventEmitter.emit("EDDNPlanetScan", fromJournalScanPlanetEventMessage(event as EDDNJournalScanPlanetEvent));
     } else if (event.message.StarType != undefined) {
-      this.logger.info("Scanned " + event.message.BodyName + " (Star Type " + event.message.StarType + ")");
+      this.logger.info("Scanned " + event.message.BodyName + " (Type " + event.message.StarType + ")");
     }
-  
-    // TODO: Add system to capture body scan events.
   }
   
   private async processEDDNJournalSAASignalsFoundEvent(event: EDDNJournalSAASignalsFoundEvent) {
