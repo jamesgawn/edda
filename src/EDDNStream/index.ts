@@ -16,7 +16,8 @@ export class EDDNStream {
   private sourceUrl: string;
   public eventEmitter: EventEmitter<{EDDNSystemScanCompleted: EDDNSystemScanCompletedEvent, 
                                       EDDNSystemBoop: EDDNSystemBoopEvent,
-                                      EDDNPlanetScan: EDDNPlanetScanEvent
+                                      EDDNPlanetScan: EDDNPlanetScanEvent,
+                                      EDDNPlanetScanNewlyDiscoveredOnly: EDDNPlanetScanEvent
                                     }> = new EventEmitter();
 
   constructor(logger: Logger, sourceUrl = 'tcp://eddn.edcd.io:9500') {
@@ -114,6 +115,9 @@ export class EDDNStream {
     if (event.message.PlanetClass != undefined) {
       this.logger.info("Scanned " + event.message.BodyName + " (" + event.message.PlanetClass + ")");
       this.eventEmitter.emit("EDDNPlanetScan", fromJournalScanPlanetEventMessage(event as EDDNJournalScanPlanetEvent));
+      if (event.message.WasDiscovered === false) {
+        this.eventEmitter.emit("EDDNPlanetScanNewlyDiscoveredOnly", fromJournalScanPlanetEventMessage(event as EDDNJournalScanPlanetEvent));
+      }
     } else if (event.message.StarType != undefined) {
       this.logger.info("Scanned " + event.message.BodyName + " (Type " + event.message.StarType + ")");
     }

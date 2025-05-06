@@ -42,6 +42,9 @@ eDDNStream.eventEmitter.addHandler("EDDNSystemBoop", (data) => {
 eDDNStream.eventEmitter.addHandler("EDDNPlanetScan", (data) => {
   io.emit("EDDNPlanetScan", data);
 })
+eDDNStream.eventEmitter.addHandler("EDDNPlanetScanNewlyDiscoveredOnly", (data) => {
+  io.emit("EDDNPlanetScanNewlyDiscoveredOnly", data);
+})
 eDDNStream.eventEmitter.addHandler("EDDNSystemScanCompleted", (data) => {
   io.emit("EDDNSystemScanCompleted", data);
 })
