@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:21-alpine
+FROM node:23.11.0-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --omit=dev
 
 # Copy the rest of the application code to the working directory
 COPY . .
@@ -17,7 +17,8 @@ COPY . .
 RUN npm run build
 
 # Expose the port your application will run on (if applicable)
-# EXPOSE 3000
+EXPOSE 3001
+ENV HTTP_PORT=3001
 
 # Define the command to run the application
 CMD ["node", "dist/index.js"]

@@ -14,7 +14,7 @@ const logger = pino({
 }));
 
 // Setup HTTP Server
-const httpServerPort = process.env.LOG_LEVEL || 3001;
+const httpServerPort = process.env.HTTP_PORT || 3001;
 
 // Setup data feed from EDDN
 const SOURCE_URL = 'tcp://eddn.edcd.io:9500';
