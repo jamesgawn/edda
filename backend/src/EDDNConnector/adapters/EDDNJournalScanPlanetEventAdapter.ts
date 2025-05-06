@@ -1,8 +1,9 @@
+import { EDDLPlanetScanEvent } from "../../types/EDDLPlanetScanEvent";
+import { EDDNJournalScanPlanetEvent } from "../types";
 
-import { EDDNPlanetScanEvent } from "../types/EDDNPlanetScanEvent";
-import { EDDNJournalScanPlanetEvent } from "../types/source-types";
-
-export function fromJournalScanPlanetEventMessage(event: EDDNJournalScanPlanetEvent): EDDNPlanetScanEvent {
+export function toEDDLPlanetScanEvent(
+  event: EDDNJournalScanPlanetEvent
+): EDDLPlanetScanEvent {
   return {
     Atmosphere: event.message.Atmosphere,
     AtmosphereType: event.message.AtmosphereType,
@@ -33,6 +34,6 @@ export function fromJournalScanPlanetEventMessage(event: EDDNJournalScanPlanetEv
     Volcanism: event.message.Volcanism,
     WasDiscovered: event.message.WasDiscovered,
     WasMapped: event.message.WasMapped,
-    Timestamp: new Date(event.message.timestamp)
-  }
+    Timestamp: new Date(event.message.timestamp),
+  };
 }

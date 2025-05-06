@@ -1,5 +1,4 @@
-# Elite Dangerous Discovery Announcer
-
+# Elite Dangerous: Discovery Logbook
 
 ## Notes
 
@@ -7,8 +6,8 @@ Boop -> FFS Discovery Scan
 FSS Body Scan -> Scan / Detailed for each body, then a FSSAllBodysScannedEvent
 Detailed Surface Scan -> SSA Scan Complete, followed by a duplicate Scan/Detailed
 
-
 Interesting data points:
+
 - How many systems discovered
 - How many systems with all bodies scanned
 - How many bodys scanned
