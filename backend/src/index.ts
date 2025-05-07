@@ -31,7 +31,9 @@ const httpServer = createServer(ittyServer);
 
 // Setup SocketIO Stream
 const io = new Server(httpServer, {
-  /* options */
+  cors: {
+    origin: "http://localhost:5173",
+  },
 });
 io.on("connection", (socket) => {
   logger.info("Client connected");
