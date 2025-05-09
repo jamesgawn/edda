@@ -3,7 +3,11 @@ import { RouterLink, RouterView, useRoute } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import { ref, watch } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { Bars3Icon, HomeIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { Bars3Icon, HomeIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { BoltIcon } from '@heroicons/vue/24/solid'
+import { useEDDLServerStore } from '@/stores/eddl'
+
+const eddlServerConnectionStore = useEDDLServerStore()
 
 const navigation = ref([
   { name: 'Dashboard', href: '/', icon: HomeIcon, current: true },
@@ -69,7 +73,7 @@ const sidebarOpen = ref(false)
               </TransitionChild>
               <!-- Sidebar component, swap this element with another sidebar if you like -->
               <div
-                class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10"
+                class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 ring-1 ring-white/10"
               >
                 <div class="flex h-16 shrink-0 items-center">
                   <img
@@ -111,9 +115,9 @@ const sidebarOpen = ref(false)
     </TransitionRoot>
 
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+    <div class="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
-      <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
+      <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
         <div class="flex h-16 shrink-0 items-center">
           <img
             class="h-8 w-auto"
@@ -140,6 +144,24 @@ const sidebarOpen = ref(false)
                   </RouterLink>
                 </li>
               </ul>
+            </li>
+            <li class="-mx-6 mt-auto">
+              <div
+                class="mb-2.5 flex items-center gap-x-3 px-6 py-3 text-sm/6 font-semibold text-white"
+              >
+                <BoltIcon
+                  :class="[
+                    eddlServerConnectionStore.$state.isConnected
+                      ? 'text-green-600'
+                      : 'text-red-600',
+                    'size-6',
+                  ]"
+                  aria-hidden="true"
+                ></BoltIcon>
+                <span>{{
+                  eddlServerConnectionStore.$state.isConnected ? 'Connected' : 'Disconnected'
+                }}</span>
+              </div>
             </li>
             <!-- <li class="-mx-6 mt-auto">
               <a
@@ -171,7 +193,9 @@ const sidebarOpen = ref(false)
         <span class="sr-only">Open sidebar</span>
         <Bars3Icon class="size-6" aria-hidden="true" />
       </button>
-      <div class="flex-1 text-sm/6 font-semibold text-white">Dashboard</div>
+      <div class="flex-1 text-sm/6 font-semibold text-white">
+        {{ navigation.find((page) => page.current)?.name }}
+      </div>
       <!-- <a href="#">
         <span class="sr-only">Your profile</span>
         <img
