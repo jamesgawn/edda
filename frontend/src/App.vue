@@ -124,6 +124,7 @@ const sidebarOpen = ref(false)
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
             alt="Your Company"
           />
+          <span class="ml-2.5 text-orange-400">EDDI</span>
         </div>
         <nav class="flex flex-1 flex-col">
           <ul role="list" class="flex flex-1 flex-col gap-y-7">
