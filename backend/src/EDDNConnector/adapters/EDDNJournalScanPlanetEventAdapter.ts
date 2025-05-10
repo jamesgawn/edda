@@ -1,9 +1,9 @@
-import { EDDLPlanetScanEvent } from "../../types/EDDLPlanetScanEvent";
+import { PlanetScanEvent } from "../../types/PlanetScanEvent";
 import { EDDNJournalScanPlanetEvent } from "../types";
 
 export function toEDDLPlanetScanEvent(
   event: EDDNJournalScanPlanetEvent
-): EDDLPlanetScanEvent {
+): PlanetScanEvent {
   return {
     Atmosphere: event.message.Atmosphere,
     AtmosphereType: event.message.AtmosphereType,

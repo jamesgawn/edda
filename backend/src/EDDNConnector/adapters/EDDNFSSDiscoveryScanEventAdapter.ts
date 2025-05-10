@@ -1,9 +1,9 @@
-import { EDDLSystemBoopEvent } from "../../types/EDDLSystemBoopEvent";
+import { SystemBoopEvent } from "../../types/SystemBoopEvent";
 import { EDDNFSSDiscoveryScanEvent } from "../types";
 
 export function toEDDLSystemBoopEvent(
   event: EDDNFSSDiscoveryScanEvent
-): EDDLSystemBoopEvent {
+): SystemBoopEvent {
   return {
     BodyCount: event.message.BodyCount,
     NonBodyCount: event.message.NonBodyCount,

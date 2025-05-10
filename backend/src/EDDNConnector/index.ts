@@ -13,21 +13,21 @@ import {
   EDDNJournalScanPlanetEvent,
 } from "./types";
 import { EventEmitter } from "../utils/EventEmitter";
-import { toEDDLSystemScanCompletedEvent } from "./adapters/EDDNFSSAllBodiesFoundEventAdapter";
-import { EDDLSystemScanCompletedEvent } from "../types/EDDLSystemScanCompletedEvent";
-import { EDDLSystemBoopEvent } from "../types/EDDLSystemBoopEvent";
-import { EDDLPlanetScanEvent } from "../types/EDDLPlanetScanEvent";
-import { toEDDLPlanetScanEvent } from "./adapters/EDDNJournalScanPlanetEventAdapter";
-import { toEDDLSystemBoopEvent } from "./adapters/EDDNFSSDiscoveryScanEventAdapter";
+import { toEDDLSystemScanCompletedEvent as toSystemScanCompletedEvent } from "./adapters/EDDNFSSAllBodiesFoundEventAdapter";
+import { SystemScanCompletedEvent } from "../types/SystemScanCompletedEvent";
+import { SystemBoopEvent } from "../types/SystemBoopEvent";
+import { PlanetScanEvent } from "../types/PlanetScanEvent";
+import { toEDDLPlanetScanEvent as toPlanetScanEvent } from "./adapters/EDDNJournalScanPlanetEventAdapter";
+import { toEDDLSystemBoopEvent as toSystemBoopEvent } from "./adapters/EDDNFSSDiscoveryScanEventAdapter";
 
 export class EDDNConnector {
   private logger: Logger;
   private sourceUrl: string;
   public eventEmitter: EventEmitter<{
-    EDDISystemScanCompleted: EDDLSystemScanCompletedEvent;
-    EDDISystemBoop: EDDLSystemBoopEvent;
-    EDDIPlanetScan: EDDLPlanetScanEvent;
-    EDDIPlanetScanNewlyDiscoveredOnly: EDDLPlanetScanEvent;
+    SystemScanCompleted: SystemScanCompletedEvent;
+    SystemBoop: SystemBoopEvent;
+    PlanetScan: PlanetScanEvent;
+    PlanetScanNewlyDiscovered: PlanetScanEvent;
   }> = new EventEmitter();
 
   constructor(logger: Logger, sourceUrl = "tcp://eddn.edcd.io:9500") {
@@ -82,8 +82,8 @@ export class EDDNConnector {
   ) {
     this.logger.info("Completed system scan in " + event.message.SystemName);
     this.eventEmitter.emit(
-      "EDDISystemScanCompleted",
-      toEDDLSystemScanCompletedEvent(event)
+      "SystemScanCompleted",
+      toSystemScanCompletedEvent(event)
     );
   }
 
@@ -110,7 +110,7 @@ export class EDDNConnector {
         event.message.NonBodyCount +
         " non-bodies."
     );
-    this.eventEmitter.emit("EDDISystemBoop", toEDDLSystemBoopEvent(event));
+    this.eventEmitter.emit("SystemBoop", toSystemBoopEvent(event));
   }
 
   private async processEDDNJournalEvent(event: EDDNGenericEvent) {
@@ -172,13 +172,13 @@ export class EDDNConnector {
           ")"
       );
       this.eventEmitter.emit(
-        "EDDIPlanetScan",
-        toEDDLPlanetScanEvent(event as EDDNJournalScanPlanetEvent)
+        "PlanetScan",
+        toPlanetScanEvent(event as EDDNJournalScanPlanetEvent)
       );
       if (event.message.WasDiscovered === false) {
         this.eventEmitter.emit(
-          "EDDIPlanetScanNewlyDiscoveredOnly",
-          toEDDLPlanetScanEvent(event as EDDNJournalScanPlanetEvent)
+          "PlanetScanNewlyDiscovered",
+          toPlanetScanEvent(event as EDDNJournalScanPlanetEvent)
         );
       }
     } else if (event.message.StarType != undefined) {

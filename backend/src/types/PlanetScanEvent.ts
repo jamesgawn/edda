@@ -1,6 +1,6 @@
-import { EDDLEvent } from "./EDDLEvent";
+import { GenericEvent } from "./GenericEvent";
 
-export interface EDDLPlanetScanEvent extends EDDLEvent {
+export interface PlanetScanEvent extends GenericEvent {
   Atmosphere: string;
   AtmosphereType: string;
   BodyID: number;

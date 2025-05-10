@@ -1,6 +1,6 @@
-import { EDDLEvent } from "./EDDLEvent";
+import { GenericEvent } from "./GenericEvent";
 
-export interface EDDLSystemBoopEvent extends EDDLEvent {
+export interface SystemBoopEvent extends GenericEvent {
   BodyCount: number;
   NonBodyCount: number;
   StarPos: number[];

@@ -43,20 +43,17 @@ io.on("disconnect", (socket) => {
 });
 
 // Setup EDDN Stream to Socket IO Stream
-eDDNConnector.eventEmitter.addHandler("EDDISystemBoop", (data) => {
-  io.emit("EDDISystemBoop", data);
+eDDNConnector.eventEmitter.addHandler("SystemBoop", (data) => {
+  io.emit("SystemBoop", data);
 });
-eDDNConnector.eventEmitter.addHandler("EDDIPlanetScan", (data) => {
-  io.emit("EDDIPlanetScan", data);
+eDDNConnector.eventEmitter.addHandler("PlanetScan", (data) => {
+  io.emit("PlanetScan", data);
 });
-eDDNConnector.eventEmitter.addHandler(
-  "EDDIPlanetScanNewlyDiscoveredOnly",
-  (data) => {
-    io.emit("EDDIPlanetScanNewlyDiscoveredOnly", data);
-  }
-);
-eDDNConnector.eventEmitter.addHandler("EDDISystemScanCompleted", (data) => {
-  io.emit("EDDISystemScanCompleted", data);
+eDDNConnector.eventEmitter.addHandler("PlanetScanNewlyDiscovered", (data) => {
+  io.emit("PlanetScanNewlyDiscovered", data);
+});
+eDDNConnector.eventEmitter.addHandler("SystemScanCompleted", (data) => {
+  io.emit("SystemScanCompleted", data);
 });
 
 async function run() {

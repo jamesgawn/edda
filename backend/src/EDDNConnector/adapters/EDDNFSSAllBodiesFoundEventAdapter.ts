@@ -1,9 +1,9 @@
-import { EDDLSystemScanCompletedEvent } from "../../types/EDDLSystemScanCompletedEvent";
+import { SystemScanCompletedEvent } from "../../types/SystemScanCompletedEvent";
 import { EDDNFSSAllBodiesFoundEvent } from "../types";
 
 export function toEDDLSystemScanCompletedEvent(
   event: EDDNFSSAllBodiesFoundEvent
-): EDDLSystemScanCompletedEvent {
+): SystemScanCompletedEvent {
   return {
     BodyCount: event.message.Count,
     StarPos: event.message.StarPos,
