@@ -1,4 +1,4 @@
-# Elite Dangerous: Discovery Logbook
+# Elite Dangerous: Exploration Tracker
 
 ## Notes
 
