@@ -9,8 +9,8 @@
   <main class="flex h-full flex-col text-white">
     <div class="flex-auto">
       <p class="mb-2.5">
-        Welcome to the Elite Dangerous Discovery Logbook service. This is an unofficial fan service
-        to provide realtime insights into the exploration activity within the game
+        Welcome to the Elite Dangerous Discovery Insights service. This is an unofficial fan service
+        to provide realtime view into the exploration activity within the game
         <a
           class="text-orange-400 hover:underline"
           href="https://elitedangerous.com"

@@ -1,4 +1,4 @@
-# Elite Dangerous: Exploration Tracker
+# Elite Dangerous: Discovery Insights
 
 ## Notes
 
