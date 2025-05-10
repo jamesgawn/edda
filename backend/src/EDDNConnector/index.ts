@@ -40,7 +40,7 @@ export class EDDNConnector {
 
     sock.connect(this.sourceUrl);
     sock.subscribe("");
-    this.logger.info("EDDN listener connected to:", this.sourceUrl);
+    this.logger.info("EDDN listener connected to: " + this.sourceUrl);
 
     for await (const [src] of sock) {
       const event = JSON.parse(

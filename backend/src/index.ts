@@ -29,10 +29,13 @@ router.get("/ping", () => "pong");
 const ittyServer = createServerAdapter(router.fetch);
 const httpServer = createServer(ittyServer);
 
+const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
+logger.info("Configured CORS Origin: " + corsOrigin);
+
 // Setup SocketIO Stream
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: corsOrigin,
   },
 });
 io.on("connection", (socket) => {
