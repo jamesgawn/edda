@@ -1,8 +1,8 @@
 name: Publish Pipeline
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - main
 permissions:
   contents: read
   packages: write
