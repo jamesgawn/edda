@@ -1,4 +1,4 @@
-import { GenericEvent } from "./GenericEvent";
+import type { GenericEvent } from "./GenericEvent";
 
 export interface PlanetScanEvent extends GenericEvent {
   Atmosphere: string;

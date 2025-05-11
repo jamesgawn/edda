@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { RouterLink, RouterView, useRoute } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 import { ref, watch } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { Bars3Icon, HomeIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'

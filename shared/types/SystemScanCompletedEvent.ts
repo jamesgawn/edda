@@ -1,4 +1,4 @@
-import { GenericEvent } from "./GenericEvent";
+import type { GenericEvent } from "./GenericEvent";
 
 export interface SystemScanCompletedEvent extends GenericEvent {
   BodyCount: number;
