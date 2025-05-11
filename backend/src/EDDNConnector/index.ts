@@ -14,9 +14,9 @@ import {
 } from "./types";
 import { EventEmitter } from "../utils/EventEmitter";
 import { toEDDLSystemScanCompletedEvent as toSystemScanCompletedEvent } from "./adapters/EDDNFSSAllBodiesFoundEventAdapter";
-import { SystemScanCompletedEvent } from "../types/SystemScanCompletedEvent";
-import { SystemBoopEvent } from "../types/SystemBoopEvent";
-import { PlanetScanEvent } from "../types/PlanetScanEvent";
+import { SystemScanCompletedEvent } from "../../../shared/types/SystemScanCompletedEvent";
+import { SystemBoopEvent } from "../../../shared/types/SystemBoopEvent";
+import { PlanetScanEvent } from "../../../shared/types/PlanetScanEvent";
 import { toEDDLPlanetScanEvent as toPlanetScanEvent } from "./adapters/EDDNJournalScanPlanetEventAdapter";
 import { toEDDLSystemBoopEvent as toSystemBoopEvent } from "./adapters/EDDNFSSDiscoveryScanEventAdapter";
 
@@ -29,6 +29,7 @@ export class EDDNConnector {
     PlanetScan: PlanetScanEvent;
     PlanetScanNewlyDiscovered: PlanetScanEvent;
   }> = new EventEmitter();
+  private plantaryFindsByClass: Map<string, number> = new Map();
 
   constructor(logger: Logger, sourceUrl = "tcp://eddn.edcd.io:9500") {
     this.logger = logger.child({ module: "EDDNStream" });
@@ -164,25 +165,25 @@ export class EDDNConnector {
   private async processEDDNJourneyScanEvent(event: EDDNJournalScanEvent) {
     // Completed scan of body
     if (event.message.PlanetClass != undefined) {
-      this.logger.info(
-        "Scanned " +
-          event.message.BodyName +
-          " (" +
-          event.message.PlanetClass +
-          ")"
-      );
       this.eventEmitter.emit(
         "PlanetScan",
         toPlanetScanEvent(event as EDDNJournalScanPlanetEvent)
       );
       if (event.message.WasDiscovered === false) {
+        this.logger.info(
+          "Scanned " +
+            event.message.BodyName +
+            " (" +
+            event.message.PlanetClass +
+            ")"
+        );
         this.eventEmitter.emit(
           "PlanetScanNewlyDiscovered",
           toPlanetScanEvent(event as EDDNJournalScanPlanetEvent)
         );
       }
     } else if (event.message.StarType != undefined) {
-      this.logger.info(
+      this.logger.trace(
         "Scanned " +
           event.message.BodyName +
           " (Type " +
