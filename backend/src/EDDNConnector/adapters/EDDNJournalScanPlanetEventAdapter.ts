@@ -1,5 +1,9 @@
-import { PlanetScanEvent } from "../../types/PlanetScanEvent";
+import { PlanetScanEvent } from "../../../../shared/types/PlanetScanEvent";
 import { EDDNJournalScanPlanetEvent } from "../types";
+import {
+  toPlanetClassEnum,
+  toSimplifiedPlanetClassEnum,
+} from "./EDDNPlanetClassAdapter";
 
 export function toEDDLPlanetScanEvent(
   event: EDDNJournalScanPlanetEvent
@@ -14,7 +18,10 @@ export function toEDDLPlanetScanEvent(
     Eccentricity: event.message.Eccentricity,
     Landable: event.message.Landable,
     MassEM: event.message.MassEM,
-    PlanetClass: event.message.PlanetClass,
+    SimplifiedPlanetClass: toSimplifiedPlanetClassEnum(
+      event.message.PlanetClass
+    ),
+    PlanetClass: toPlanetClassEnum(event.message.PlanetClass),
     MeanAnomaly: event.message.MeanAnomaly,
     OrbitalInclination: event.message.OrbitalInclination,
     OrbitalPeriod: event.message.OrbitalPeriod,

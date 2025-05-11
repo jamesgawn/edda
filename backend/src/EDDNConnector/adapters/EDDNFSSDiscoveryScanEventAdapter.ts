@@ -1,4 +1,4 @@
-import { SystemBoopEvent } from "../../types/SystemBoopEvent";
+import { SystemBoopEvent } from "../../../../shared/types/SystemBoopEvent";
 import { EDDNFSSDiscoveryScanEvent } from "../types";
 
 export function toEDDLSystemBoopEvent(

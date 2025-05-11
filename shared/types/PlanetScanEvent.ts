@@ -1,6 +1,18 @@
 import type { GenericEvent } from "./GenericEvent";
 
-enum PlanetClass {
+export enum SimplifiedPlanetClass {
+  MetalRich,
+  HighMetalContent,
+  Rocky,
+  Icy,
+  RockyIcy,
+  Earthlike,
+  WaterWorld,
+  AmonniaWorld,
+  WaterGiant,
+  GasGiant,
+}
+export enum PlanetClass {
   MetalRich = "Metal rich body",
   HighMetalContent = "High metal content body",
   Rocky = "Rocky body",
@@ -13,13 +25,13 @@ enum PlanetClass {
   WaterGiantWithLife = "Water giant with life",
   GasGiantWithWaterBasedLife = "Gas giant with water based life",
   GasGiantWithAmmoniaBasedLife = "Gas giant with ammonia based life",
-  SudarskyClassI = "Sudarsky class I gas giant",
-  SudarskyClassII = "Sudarsky class II gas giant",
-  SudarskyClassIII = "Sudarsky class III gas giant",
-  SudarskyClassIV = "Sudarsky class IV gas giant",
-  SudarskyClassV = "Sudarsky class V gas giant",
-  HeliumRich = "Helium rich gas giant",
-  HeliumGasGiant = "Helium gas giant",
+  GasGiantClassI = "Sudarsky class I gas giant",
+  GasGiantClassII = "Sudarsky class II gas giant",
+  GasGiantClassIII = "Sudarsky class III gas giant",
+  GasGiantClassIV = "Sudarsky class IV gas giant",
+  GasGiantClassV = "Sudarsky class V gas giant",
+  GasGiantHeliumRich = "Helium rich gas giant",
+  GasGiantHelium = "Helium gas giant",
 }
 
 export interface PlanetScanEvent extends GenericEvent {
@@ -36,6 +48,7 @@ export interface PlanetScanEvent extends GenericEvent {
   Eccentricity: number;
   Landable: boolean;
   MassEM: number;
+  SimplifiedPlanetClass: SimplifiedPlanetClass;
   PlanetClass: PlanetClass;
   MeanAnomaly: number;
   OrbitalInclination: number;
