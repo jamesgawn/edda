@@ -4,15 +4,16 @@ import { useEDDLServerStore } from '@/stores/eddl'
 const eddlServerConnectionStore = useEDDLServerStore()
 
 const stats = [
-  { name: 'Earth Like', value: '0' },
-  { name: 'Water', value: '0' },
-  { name: 'Ammonia', value: '0' },
+  { name: 'Earthlike', value: '0' },
+  { name: 'Water World', value: '0' },
+  { name: 'Ammonia World', value: '0' },
   { name: 'High Metal Content', value: '0' },
   { name: 'Metal-Rich', value: '0' },
   { name: 'Icy', value: '0' },
   { name: 'Rocky Icy', value: '0' },
   { name: 'Rocky', value: '0' },
-  { name: 'Gas', value: '0' },
+  { name: 'Gas Giant', value: '0' },
+  { name: 'Water Giant', value: '0' },
 ]
 </script>
 
@@ -29,11 +30,13 @@ const stats = [
       class="flex flex-col items-start justify-between gap-x-8 gap-y-4 bg-gray-700/10 px-4 py-4 sm:flex-row sm:items-center sm:px-6 lg:px-8"
     >
       <div>
-        <h2 class="text-base/7 font-semibold text-white">Newly Discovered Planetary Bodies</h2>
+        <h2 class="text-base/7 font-semibold text-white">
+          Newly Discovered Planetary Bodies By Class
+        </h2>
         <!-- <p class="mt-2 text-xs/6 text-gray-400">Since...</p> -->
       </div>
     </div>
-    <div class="grid grid-cols-1 bg-gray-700/10 sm:grid-cols-2 lg:grid-cols-7">
+    <div class="grid grid-cols-1 bg-gray-700/10 sm:grid-cols-2 lg:grid-cols-5">
       <div
         v-for="(stat, statIdx) in stats"
         :key="stat.name"
@@ -51,7 +54,9 @@ const stats = [
 
     <!-- Latest Exploration Activity -->
     <div class="border-t border-white/10 pt-11">
-      <h2 class="px-4 text-base/7 font-semibold text-white sm:px-6 lg:px-8">Latest activity</h2>
+      <h2 class="px-4 text-base/7 font-semibold text-white sm:px-6 lg:px-8">
+        Recently discovered bodies
+      </h2>
       <table class="mt-6 w-full text-left whitespace-nowrap">
         <colgroup>
           <col class="w-full sm:w-4/12" />
