@@ -33,17 +33,21 @@ export enum PlanetClass {
   GasGiantHeliumRich = "Gas Giant - Helium Rich",
   GasGiantHelium = "Gas Giant - Helium",
 }
+export enum TerraformState {
+  Terraformable,
+  Terraforming,
+  Terraformed,
+  NotTerraformable = "Not Terraformable",
+}
 
 export interface PlanetScanEvent extends GenericEvent {
   Atmosphere: string;
   AtmosphereType: string;
   BodyID: number;
   BodyName: string;
-  Composition: {
-    Ice: number;
-    Metal: number;
-    Rock: number;
-  };
+  CompositionIce: number;
+  CompositionMetal: number;
+  CompositionRock: number;
   DistanceFromArrivalLS: number;
   Eccentricity: number;
   Landable: boolean;
@@ -59,12 +63,14 @@ export interface PlanetScanEvent extends GenericEvent {
   Radius: number;
   SemiMajorAxis: number;
   ScanType: string;
-  StarPos: number[];
+  StarPosX: number;
+  StarPosY: number;
+  StarPosZ: number;
   SystemName: string;
   SystemAddress: number;
   SurfaceGravity: number;
   SurfacePressure: number;
-  TerraformState: string;
+  TerraformState: TerraformState;
   TidalLock: boolean;
   Volcanism: string;
   WasDiscovered: boolean;
