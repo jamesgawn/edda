@@ -6,8 +6,11 @@ export function getRoutes(dataStore: DataStore) {
   router.get("/", () => "EDDI API");
   router.get("/ping", () => "pong");
 
-  router.get("/planetScanEvents", async (query) => {
-    return dataStore.planetScanEventStore.getRecentEvents(query.limit);
+  router.get("/planetScanEvents", async (request) => {
+    const limit = request.query.limit
+      ? parseInt(request.query.limit as string)
+      : undefined;
+    return dataStore.planetScanEventStore.getRecentEvents(limit);
   });
 
   return router.fetch;

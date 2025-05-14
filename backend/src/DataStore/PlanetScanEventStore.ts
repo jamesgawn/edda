@@ -174,10 +174,11 @@ export class PlanetScanEventStore {
     }
   }
 
-  public async getRecentEvents(
-    limit: number = 100
-  ): Promise<PlanetScanEvent[]> {
-    this.logger.trace("Fetching recent PlanetScanEvents from database");
+  public async getRecentEvents(limit: number = 20): Promise<PlanetScanEvent[]> {
+    this.logger.info(
+      "Fetching recent PlanetScanEvents from database (limit: %d)",
+      limit
+    );
 
     const query = `
       SELECT * FROM planet_scan_events
