@@ -11,6 +11,7 @@ export class PlanetScanEventStore {
   private logger: Logger;
   private db: DatabaseSync;
   private insertPreparedStatement: StatementSync;
+  private getNewlyDiscoveredBySimplifiedPlanetClass: StatementSync;
 
   constructor(logger: Logger, db: DatabaseSync) {
     this.logger = logger.child({ module: "PlanetScanEventStore" });
@@ -64,6 +65,10 @@ export class PlanetScanEventStore {
         WasDiscovered = excluded.WasDiscovered,
         WasMapped = excluded.WasMapped
       `
+    );
+
+    this.getNewlyDiscoveredBySimplifiedPlanetClass = this.db.prepare(
+      `SELECT SimplifiedPlanetClass, count(*) as numberFound FROM planet_scan_events WHERE WasDiscovered = 0 GROUP BY SimplifiedPlanetClass`
     );
   }
 
@@ -175,7 +180,7 @@ export class PlanetScanEventStore {
   }
 
   public async getRecentEvents(limit: number = 20): Promise<PlanetScanEvent[]> {
-    this.logger.info(
+    this.logger.trace(
       "Fetching recent PlanetScanEvents from database (limit: %d)",
       limit
     );
@@ -190,5 +195,21 @@ export class PlanetScanEventStore {
     const rows = stmt.all(limit) as PlanetScanEventDso[];
 
     return rows.map((row) => fromPlanetScanEventStoreDso(row));
+  }
+
+  public async getNewlyDiscoveredEventsBySimplifiedPlanetClass() {
+    this.logger.info(
+      "Fetching newly discovered PlanetScanEvents by simplified type"
+    );
+
+    const rows = this.getNewlyDiscoveredBySimplifiedPlanetClass.all() as {
+      SimplifiedPlanetClass: string;
+      numberFound: number;
+    }[];
+
+    return rows.map((row) => ({
+      SimplifiedPlanetClass: row.SimplifiedPlanetClass,
+      count: row.numberFound,
+    }));
   }
 }

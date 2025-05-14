@@ -13,5 +13,12 @@ export function getRoutes(dataStore: DataStore) {
     return dataStore.planetScanEventStore.getRecentEvents(limit);
   });
 
+  router.get(
+    "/planetScanEvents/newlyDiscoveredBySimplifiedPlanetClass",
+    async () => {
+      return dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClass();
+    }
+  );
+
   return router.fetch;
 }
