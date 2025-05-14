@@ -117,13 +117,17 @@ const sidebarOpen = ref(false)
     <div class="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
-        <div class="flex h-16 shrink-0 items-center">
+        <div class="flex h-20 shrink-0 items-center">
           <img
             class="h-8 w-auto"
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-            alt="Your Company"
+            alt="Elite Dangerous Discovery Insights Logo"
+            aria-hidden="false"
           />
-          <span class="ml-2.5 text-orange-400">EDDI</span>
+          <div class="items-left items-left ml-4 flex flex-col justify-start font-bold text-white">
+            <span>Elite: Dangerous</span>
+            <span>Discovery Insights</span>
+          </div>
         </div>
         <nav class="flex flex-1 flex-col">
           <ul role="list" class="flex flex-1 flex-col gap-y-7">
