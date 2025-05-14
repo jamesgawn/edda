@@ -5,6 +5,7 @@ import { createServer } from "http";
 import { AutoRouter } from "itty-router";
 import { Server } from "socket.io";
 import { DataStore } from "./DataStore";
+import { getRoutes } from "./routes";
 
 // Setup Logging
 const logger = pino(
@@ -29,12 +30,7 @@ const SOURCE_URL = "tcp://eddn.edcd.io:9500";
 const eDDNConnector = new EDDNConnector(logger, SOURCE_URL);
 
 // Setup API Router
-const router = AutoRouter();
-router.get("/ping", () => "pong");
-router.get("/planetScanEvents", async (req) => {
-  return dataStore.planetScanEventStore.getRecentEvents(100);
-});
-const ittyServer = createServerAdapter(router.fetch);
+const ittyServer = createServerAdapter(getRoutes(dataStore));
 const httpServer = createServer(ittyServer);
 
 const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
