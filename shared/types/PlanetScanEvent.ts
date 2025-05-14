@@ -34,9 +34,9 @@ export enum PlanetClass {
   GasGiantHelium = "Gas Giant - Helium",
 }
 export enum TerraformState {
-  Terraformable,
-  Terraforming,
-  Terraformed,
+  Terraformable = "Terraformable",
+  Terraforming = "Terraforming",
+  Terraformed = "Terraformed",
   NotTerraformable = "Not Terraformable",
 }
 

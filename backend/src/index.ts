@@ -4,6 +4,7 @@ import { createServerAdapter } from "@whatwg-node/server";
 import { createServer } from "http";
 import { AutoRouter } from "itty-router";
 import { Server } from "socket.io";
+import { DataStore } from "./DataStore";
 
 // Setup Logging
 const logger = pino(
@@ -18,6 +19,10 @@ const logger = pino(
 
 // Setup HTTP Server
 const httpServerPort = process.env.HTTP_PORT || 3001;
+const dbFilePath = process.env.DB_FILE_PATH || ":memory:";
+
+// Setup Database
+const dataStore = new DataStore(logger, dbFilePath);
 
 // Setup data feed from EDDN
 const SOURCE_URL = "tcp://eddn.edcd.io:9500";
@@ -26,6 +31,9 @@ const eDDNConnector = new EDDNConnector(logger, SOURCE_URL);
 // Setup API Router
 const router = AutoRouter();
 router.get("/ping", () => "pong");
+router.get("/planetScanEvents", async (req) => {
+  return dataStore.planetScanEventStore.getRecentEvents(100);
+});
 const ittyServer = createServerAdapter(router.fetch);
 const httpServer = createServer(ittyServer);
 
@@ -54,6 +62,7 @@ eDDNConnector.eventEmitter.addHandler("PlanetScan", (data) => {
 });
 eDDNConnector.eventEmitter.addHandler("PlanetScanNewlyDiscovered", (data) => {
   io.emit("PlanetScanNewlyDiscovered", data);
+  dataStore.planetScanEventStore.insert(data);
 });
 eDDNConnector.eventEmitter.addHandler("SystemScanCompleted", (data) => {
   io.emit("SystemScanCompleted", data);
