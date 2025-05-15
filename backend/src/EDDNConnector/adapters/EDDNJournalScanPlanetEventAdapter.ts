@@ -3,7 +3,7 @@ import {
   PlanetScanEvent,
   SimplifiedPlanetClass,
   TerraformState,
-} from "../../../../shared/types/PlanetScanEvent";
+} from "../../../../shared/types/events/PlanetScanEvent";
 import { EDDNJournalScanPlanetEvent } from "../types";
 
 export function toEDDLPlanetScanEvent(

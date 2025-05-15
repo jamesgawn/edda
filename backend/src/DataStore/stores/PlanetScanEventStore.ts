@@ -1,11 +1,15 @@
 import { DatabaseSync, StatementSync } from "node:sqlite";
 import { Logger } from "pino";
-import { PlanetScanEvent } from "../../../shared/types/PlanetScanEvent";
+import {
+  PlanetScanEvent,
+  SimplifiedPlanetClass,
+} from "../../../../shared/types/events/PlanetScanEvent";
 import {
   fromPlanetScanEventStoreDso,
   toPlanetScanEventStoreDso,
-} from "./adapters/PlanetScanEventAdaptor";
-import { PlanetScanEventDso } from "./types/PlanetScanEventDso";
+} from "../adapters/PlanetScanEventAdaptor";
+import { PlanetScanEventDso } from "../types/PlanetScanEventDso";
+import { NewPlanetaryDiscoveriesBySimplifiedClassEvent } from "../../../../shared/types/events/NewPlanetaryDiscoveriesBySimplifiedClassEvent";
 
 export class PlanetScanEventStore {
   private logger: Logger;
@@ -172,9 +176,10 @@ export class PlanetScanEventStore {
         eventDso.WasMapped
       );
     } catch (error) {
-      this.logger.error("Error inserting PlanetScanEvent: ", event, error);
-      this.logger.error(event);
-      this.logger.error(error);
+      this.logger.warn("Error inserting PlanetScanEvent: ", event, error);
+      this.logger.warn(event);
+      this.logger.warn(eventDso);
+      this.logger.warn(error);
       throw error;
     }
   }
@@ -197,8 +202,8 @@ export class PlanetScanEventStore {
     return rows.map((row) => fromPlanetScanEventStoreDso(row));
   }
 
-  public async getNewlyDiscoveredEventsBySimplifiedPlanetClass() {
-    this.logger.info(
+  public async getNewlyDiscoveredEventsBySimplifiedPlanetClass(): Promise<NewPlanetaryDiscoveriesBySimplifiedClassEvent> {
+    this.logger.trace(
       "Fetching newly discovered PlanetScanEvents by simplified type"
     );
 
@@ -207,9 +212,58 @@ export class PlanetScanEventStore {
       numberFound: number;
     }[];
 
-    return rows.map((row) => ({
-      SimplifiedPlanetClass: row.SimplifiedPlanetClass,
-      count: row.numberFound,
-    }));
+    const metalRichResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.MetalRich
+    );
+    const highMetalContentResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.HighMetalContent
+    );
+    const rockyResult = rows.find(
+      (result) => result.SimplifiedPlanetClass === SimplifiedPlanetClass.Rocky
+    );
+    const icyResult = rows.find(
+      (result) => result.SimplifiedPlanetClass === SimplifiedPlanetClass.Icy
+    );
+    const rockyIcyResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.RockyIcy
+    );
+    const earthlikeResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.Earthlike
+    );
+    const waterWorldResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.WaterWorld
+    );
+    const ammoniumWorldResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.AmonniaWorld
+    );
+    const waterGiantResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.WaterGiant
+    );
+    const gasGiantResult = rows.find(
+      (result) =>
+        result.SimplifiedPlanetClass === SimplifiedPlanetClass.GasGiant
+    );
+
+    return {
+      MetalRich: metalRichResult ? metalRichResult.numberFound : 0,
+      HighMetalContent: highMetalContentResult
+        ? highMetalContentResult.numberFound
+        : 0,
+      Rocky: rockyResult ? rockyResult.numberFound : 0,
+      Icy: icyResult ? icyResult.numberFound : 0,
+      RockyIcy: rockyIcyResult ? rockyIcyResult.numberFound : 0,
+      Earthlike: earthlikeResult ? earthlikeResult.numberFound : 0,
+      WaterWorld: waterWorldResult ? waterWorldResult.numberFound : 0,
+      AmonniaWorld: ammoniumWorldResult ? ammoniumWorldResult.numberFound : 0,
+      WaterGiant: waterGiantResult ? waterGiantResult.numberFound : 0,
+      GasGiant: gasGiantResult ? gasGiantResult.numberFound : 0,
+    };
   }
 }

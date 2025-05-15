@@ -1,7 +1,10 @@
-import { AutoRouter } from "itty-router";
+import { AutoRouter, error } from "itty-router";
 import { DataStore } from "../DataStore";
+import { Logger } from "pino";
+import { NewPlanetaryDiscoveriesBySimplifiedClassResponse } from "../../../shared/types/response/NewPlanetaryDiscoveriesBySimplifiedClassResponse";
+import { SimplifiedPlanetClass } from "../../../shared/types/events/PlanetScanEvent";
 
-export function getRoutes(dataStore: DataStore) {
+export function getRoutes(logger: Logger, dataStore: DataStore) {
   const router = AutoRouter();
   router.get("/", () => "EDDI API");
   router.get("/ping", () => "pong");
@@ -16,7 +19,14 @@ export function getRoutes(dataStore: DataStore) {
   router.get(
     "/planetScanEvents/newlyDiscoveredBySimplifiedPlanetClass",
     async () => {
-      return dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClass();
+      const data =
+        await dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClass();
+
+      return {
+        status: 200,
+        message: "Newly discovered planets by simplified class",
+        data: data,
+      } as NewPlanetaryDiscoveriesBySimplifiedClassResponse;
     }
   );
 

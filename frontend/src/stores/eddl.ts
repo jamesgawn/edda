@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { socket } from '@/socket'
-import type { PlanetScanEvent } from '../../../shared/types/PlanetScanEvent'
+import type { PlanetScanEvent } from '../../../shared/types/events/PlanetScanEvent'
 
 export const useEDDLServerStore = defineStore('connection', {
   state: () => ({

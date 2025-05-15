@@ -30,7 +30,7 @@ const SOURCE_URL = "tcp://eddn.edcd.io:9500";
 const eDDNConnector = new EDDNConnector(logger, SOURCE_URL);
 
 // Setup API Router
-const ittyServer = createServerAdapter(getRoutes(dataStore));
+const ittyServer = createServerAdapter(getRoutes(logger, dataStore));
 const httpServer = createServer(ittyServer);
 
 const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
@@ -56,10 +56,16 @@ eDDNConnector.eventEmitter.addHandler("SystemBoop", (data) => {
 eDDNConnector.eventEmitter.addHandler("PlanetScan", (data) => {
   io.emit("PlanetScan", data);
 });
-eDDNConnector.eventEmitter.addHandler("PlanetScanNewlyDiscovered", (data) => {
-  io.emit("PlanetScanNewlyDiscovered", data);
-  dataStore.planetScanEventStore.insert(data);
-});
+eDDNConnector.eventEmitter.addHandler(
+  "PlanetScanNewlyDiscovered",
+  async (data) => {
+    io.emit("PlanetScanNewlyDiscovered", data);
+    dataStore.planetScanEventStore.insert(data);
+    const summaryUpdate =
+      await dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClass();
+    io.emit("NewlyDiscoveredBySimplifiedPlanetClass", summaryUpdate);
+  }
+);
 eDDNConnector.eventEmitter.addHandler("SystemScanCompleted", (data) => {
   io.emit("SystemScanCompleted", data);
 });

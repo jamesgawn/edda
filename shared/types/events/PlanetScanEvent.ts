@@ -54,7 +54,7 @@ export interface PlanetScanEvent extends GenericEvent {
   MassEM: number;
   SimplifiedPlanetClass: SimplifiedPlanetClass;
   PlanetClass: PlanetClass;
-  MeanAnomaly: number;
+  MeanAnomaly: number | null;
   OrbitalInclination: number;
   OrbitalPeriod: number;
   Periapsis: number;

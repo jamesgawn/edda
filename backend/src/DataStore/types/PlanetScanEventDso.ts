@@ -1,7 +1,7 @@
 import {
   PlanetClass,
   SimplifiedPlanetClass,
-} from "../../../../shared/types/PlanetScanEvent";
+} from "../../../../shared/types/events/PlanetScanEvent";
 import { GenericEventDso } from "./GenericEventDso";
 
 export interface PlanetScanEventDso extends GenericEventDso {
@@ -18,7 +18,7 @@ export interface PlanetScanEventDso extends GenericEventDso {
   MassEM: number;
   SimplifiedPlanetClass: string;
   PlanetClass: string;
-  MeanAnomaly: number;
+  MeanAnomaly: number | null;
   OrbitalInclination: number;
   OrbitalPeriod: number;
   Periapsis: number;

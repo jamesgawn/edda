@@ -1,6 +1,6 @@
 import { DatabaseSync } from "node:sqlite";
 import { Logger } from "pino";
-import { PlanetScanEventStore } from "./PlanetScanEventStore";
+import { PlanetScanEventStore } from "./stores/PlanetScanEventStore";
 
 export class DataStore {
   private logger: Logger;
