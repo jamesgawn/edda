@@ -14,11 +14,11 @@ import {
 } from "./types";
 import { EventEmitter } from "../utils/EventEmitter";
 import { toEDDLSystemScanCompletedEvent as toSystemScanCompletedEvent } from "./adapters/EDDNFSSAllBodiesFoundEventAdapter";
-import { SystemScanCompletedEvent } from "../../../shared/types/SystemScanCompletedEvent";
-import { SystemBoopEvent } from "../../../shared/types/SystemBoopEvent";
-import { PlanetScanEvent } from "../../../shared/types/PlanetScanEvent";
 import { toEDDLPlanetScanEvent as toPlanetScanEvent } from "./adapters/EDDNJournalScanPlanetEventAdapter";
 import { toEDDLSystemBoopEvent as toSystemBoopEvent } from "./adapters/EDDNFSSDiscoveryScanEventAdapter";
+import { SystemScanCompletedEvent } from "../../../shared/types/events/SystemScanCompletedEvent";
+import { SystemBoopEvent } from "../../../shared/types/events/SystemBoopEvent";
+import { PlanetScanEvent } from "../../../shared/types/events/PlanetScanEvent";
 
 export class EDDNConnector {
   private logger: Logger;

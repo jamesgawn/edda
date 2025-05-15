@@ -1,4 +1,4 @@
-import { SystemScanCompletedEvent } from "../../../../shared/types/SystemScanCompletedEvent";
+import { SystemScanCompletedEvent } from "../../../../shared/types/events/SystemScanCompletedEvent";
 import { EDDNFSSAllBodiesFoundEvent } from "../types";
 
 export function toEDDLSystemScanCompletedEvent(
