@@ -24,7 +24,7 @@ export class PlanetScanEventStore {
     this.initialize();
 
     this.insertPreparedStatement = this.db.prepare(
-      `INSERT INTO planet_scan_events (
+      `INSERT OR IGNORE INTO planet_scan_events (
         Atmosphere, AtmosphereType, BodyID, BodyName, CompositionIce, CompositionMetal, CompositionRock, 
         DistanceFromArrivalLS, Eccentricity, Landable, MassEM, SimplifiedPlanetClass, PlanetClass, 
         MeanAnomaly, OrbitalInclination, OrbitalPeriod, Periapsis, ReserveLevel, RotationPeriod, Radius, 
@@ -33,41 +33,6 @@ export class PlanetScanEventStore {
       ) VALUES (
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
       )
-      ON CONFLICT(BodyID) DO UPDATE SET
-        Atmosphere = excluded.Atmosphere,
-        AtmosphereType = excluded.AtmosphereType,
-        BodyName = excluded.BodyName,
-        CompositionIce = excluded.CompositionIce,
-        CompositionMetal = excluded.CompositionMetal,
-        CompositionRock = excluded.CompositionRock,
-        DistanceFromArrivalLS = excluded.DistanceFromArrivalLS,
-        Eccentricity = excluded.Eccentricity,
-        Landable = excluded.Landable,
-        MassEM = excluded.MassEM,
-        SimplifiedPlanetClass = excluded.SimplifiedPlanetClass,
-        PlanetClass = excluded.PlanetClass,
-        MeanAnomaly = excluded.MeanAnomaly,
-        OrbitalInclination = excluded.OrbitalInclination,
-        OrbitalPeriod = excluded.OrbitalPeriod,
-        Periapsis = excluded.Periapsis,
-        ReserveLevel = excluded.ReserveLevel,
-        RotationPeriod = excluded.RotationPeriod,
-        Radius = excluded.Radius,
-        SemiMajorAxis = excluded.SemiMajorAxis,
-        ScanType = excluded.ScanType,
-        StarPosX = excluded.StarPosX,
-        StarPosY = excluded.StarPosY,
-        StarPosZ = excluded.StarPosZ,
-        SystemName = excluded.SystemName,
-        SystemAddress = excluded.SystemAddress,
-        SurfaceGravity = excluded.SurfaceGravity,
-        SurfacePressure = excluded.SurfacePressure,
-        TerraformState = excluded.TerraformState,
-        TidalLock = excluded.TidalLock,
-        Timestamp = excluded.Timestamp,
-        Volcanism = excluded.Volcanism,
-        WasDiscovered = excluded.WasDiscovered,
-        WasMapped = excluded.WasMapped
       `
     );
 
@@ -84,8 +49,8 @@ export class PlanetScanEventStore {
       CREATE TABLE IF NOT EXISTS planet_scan_events (
         Atmosphere TEXT,
         AtmosphereType TEXT,
-        BodyID INTEGER NOT NULL PRIMARY KEY,
-        BodyName TEXT,
+        BodyID INTEGER NOT NULL,
+        BodyName TEXT PRIMARY KEY,
         CompositionIce REAL,
         CompositionMetal REAL,
         CompositionRock REAL,
@@ -134,7 +99,10 @@ export class PlanetScanEventStore {
   }
 
   public async insert(event: PlanetScanEvent) {
-    this.logger.trace("Inserting PlanetScanEvent into database");
+    this.logger.debug(
+      "Inserting PlanetScanEvent into database (%s)",
+      event.BodyID
+    );
 
     const eventDso = toPlanetScanEventStoreDso(event);
     try {
