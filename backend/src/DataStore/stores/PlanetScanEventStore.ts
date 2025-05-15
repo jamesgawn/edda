@@ -261,7 +261,7 @@ export class PlanetScanEventStore {
       RockyIcy: rockyIcyResult ? rockyIcyResult.numberFound : 0,
       Earthlike: earthlikeResult ? earthlikeResult.numberFound : 0,
       WaterWorld: waterWorldResult ? waterWorldResult.numberFound : 0,
-      AmonniaWorld: ammoniumWorldResult ? ammoniumWorldResult.numberFound : 0,
+      AmmoniaWorld: ammoniumWorldResult ? ammoniumWorldResult.numberFound : 0,
       WaterGiant: waterGiantResult ? waterGiantResult.numberFound : 0,
       GasGiant: gasGiantResult ? gasGiantResult.numberFound : 0,
     };

@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { socket } from '@/socket'
 import type { PlanetScanEvent } from '../../../shared/types/events/PlanetScanEvent'
+import type { NewPlanetaryDiscoveriesBySimplifiedClassEvent } from '../../../shared/types/events/NewPlanetaryDiscoveriesBySimplifiedClassEvent'
 
 export const useEDDLServerStore = defineStore('connection', {
   state: () => ({
     isConnected: false,
     planetaryFinds: [] as PlanetScanEvent[],
+    newlyDiscoveredBysimplifiedClass: {} as NewPlanetaryDiscoveriesBySimplifiedClassEvent,
   }),
 
   actions: {
@@ -24,6 +26,10 @@ export const useEDDLServerStore = defineStore('connection', {
         if (this.planetaryFinds.length > 20) {
           this.planetaryFinds.pop()
         }
+      })
+
+      socket.on('NewlyDiscoveredBySimplifiedPlanetClass', (data) => {
+        this.newlyDiscoveredBysimplifiedClass = data
       })
     },
   },

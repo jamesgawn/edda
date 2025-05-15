@@ -6,7 +6,7 @@ export type NewPlanetaryDiscoveriesBySimplifiedClassEvent = {
   RockyIcy: number;
   Earthlike: number;
   WaterWorld: number;
-  AmonniaWorld: number;
+  AmmoniaWorld: number;
   WaterGiant: number;
   GasGiant: number;
 };
