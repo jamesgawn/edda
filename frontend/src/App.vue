@@ -2,7 +2,13 @@
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { ref, watch } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { Bars3Icon, HomeIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  Bars3Icon,
+  HomeIcon,
+  InformationCircleIcon,
+  XMarkIcon,
+  GlobeAltIcon,
+} from '@heroicons/vue/24/outline'
 import { BoltIcon } from '@heroicons/vue/24/solid'
 import { useEDDLServerStore } from '@/stores/eddl'
 
@@ -75,11 +81,8 @@ const sidebarOpen = ref(false)
                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 ring-1 ring-white/10"
               >
                 <div class="flex h-16 shrink-0 items-center">
-                  <img
-                    class="h-8 w-auto"
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
+                  <GlobeAltIcon class="h-8 w-auto text-orange-600"></GlobeAltIcon>
+                  <span class="ml-4 font-bold text-white">ED: Deep Space Insights</span>
                 </div>
                 <nav class="flex flex-1 flex-col">
                   <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -117,16 +120,11 @@ const sidebarOpen = ref(false)
     <div class="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
-        <div class="flex h-20 shrink-0 items-center">
-          <img
-            class="h-8 w-auto"
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-            alt="Elite Dangerous Discovery Insights Logo"
-            aria-hidden="false"
-          />
+        <div class="flex h-25 shrink-0 items-center">
+          <GlobeAltIcon class="h-8 w-auto text-orange-600"></GlobeAltIcon>
           <div class="items-left items-left ml-4 flex flex-col justify-start font-bold text-white">
-            <span>Elite: Dangerous</span>
-            <span>Discovery Insights</span>
+            <span>Elite Dangerous</span>
+            <span>Deep Space Insights</span>
           </div>
         </div>
         <nav class="flex flex-1 flex-col">

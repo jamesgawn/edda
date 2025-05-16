@@ -1,4 +1,4 @@
-# Elite Dangerous: Discovery Insights
+# Elite Dangerous: Deep Space Insights
 
 ## Notes
 
