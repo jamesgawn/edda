@@ -21,7 +21,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Earthlike</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.Earthlike
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.Earthlike
         }}</span>
       </p>
     </div>
@@ -29,7 +29,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Water World</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.WaterWorld
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.WaterWorld
         }}</span>
       </p>
     </div>
@@ -37,7 +37,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Ammonia World</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.AmmoniaWorld
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.AmmoniaWorld
         }}</span>
       </p>
     </div>
@@ -45,7 +45,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">High Metal Content</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.HighMetalContent
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.HighMetalContent
         }}</span>
       </p>
     </div>
@@ -53,7 +53,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Metal-Rich</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.MetalRich
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.MetalRich
         }}</span>
       </p>
     </div>
@@ -61,7 +61,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Icy</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.Icy
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.Icy
         }}</span>
       </p>
     </div>
@@ -69,7 +69,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Rocky Icy</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.RockyIcy
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.RockyIcy
         }}</span>
       </p>
     </div>
@@ -77,7 +77,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Rocky</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.Rocky
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.Rocky
         }}</span>
       </p>
     </div>
@@ -85,7 +85,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Gas Giant</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.GasGiant
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.GasGiant
         }}</span>
       </p>
     </div>
@@ -93,7 +93,7 @@ const eddlServerConnectionStore = useEDDLServerStore()
       <p class="text-sm/6 font-medium text-gray-400">Water Giant</p>
       <p class="mt-2 flex items-baseline gap-x-2">
         <span class="text-4xl font-semibold tracking-tight text-white">{{
-          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClass.WaterGiant
+          eddlServerConnectionStore.newlyDiscoveredBysimplifiedClassToday.WaterGiant
         }}</span>
       </p>
     </div>

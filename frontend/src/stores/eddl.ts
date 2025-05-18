@@ -7,7 +7,7 @@ export const useEDDLServerStore = defineStore('connection', {
   state: () => ({
     isConnected: false,
     planetaryFinds: [] as PlanetScanEvent[],
-    newlyDiscoveredBysimplifiedClass: {} as NewPlanetaryDiscoveriesBySimplifiedClassEvent,
+    newlyDiscoveredBysimplifiedClassToday: {} as NewPlanetaryDiscoveriesBySimplifiedClassEvent,
   }),
 
   actions: {
@@ -28,8 +28,8 @@ export const useEDDLServerStore = defineStore('connection', {
         }
       })
 
-      socket.on('NewlyDiscoveredBySimplifiedPlanetClass', (data) => {
-        this.newlyDiscoveredBysimplifiedClass = data
+      socket.on('NewlyDiscoveredBySimplifiedPlanetClassToday', (data) => {
+        this.newlyDiscoveredBysimplifiedClassToday = data
       })
     },
   },

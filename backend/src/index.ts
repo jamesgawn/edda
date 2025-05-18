@@ -62,7 +62,7 @@ eDDNConnector.eventEmitter.addHandler(
     dataStore.planetScanEventStore.insert(data);
     const summaryUpdate =
       await dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClassToday();
-    io.emit("NewlyDiscoveredBySimplifiedPlanetClass", summaryUpdate);
+    io.emit("NewlyDiscoveredBySimplifiedPlanetClassToday", summaryUpdate);
   }
 );
 eDDNConnector.eventEmitter.addHandler("SystemScanCompleted", (data) => {
