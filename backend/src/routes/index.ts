@@ -6,7 +6,7 @@ import { SimplifiedPlanetClass } from "../../../shared/types/events/PlanetScanEv
 
 export function getRoutes(logger: Logger, dataStore: DataStore) {
   const router = AutoRouter();
-  router.get("/", () => "EDDI API");
+  router.get("/", () => "ED:DSI API");
   router.get("/ping", () => "pong");
 
   router.get("/planetScanEvents", async (request) => {
@@ -21,6 +21,25 @@ export function getRoutes(logger: Logger, dataStore: DataStore) {
     async () => {
       const data =
         await dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClass();
+
+      return {
+        status: 200,
+        message: "Newly discovered planets by simplified class",
+        data: data,
+      } as NewPlanetaryDiscoveriesBySimplifiedClassResponse;
+    }
+  );
+
+  router.get(
+    "/planetScanEvents/newlyDiscoveredBySimplifiedPlanetClass/today",
+    async () => {
+      const today = new Date(Date.now());
+      today.setHours(0, 0, 0, 0);
+
+      const data =
+        await dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClass(
+          today
+        );
 
       return {
         status: 200,

@@ -37,7 +37,7 @@ export class PlanetScanEventStore {
     );
 
     this.getNewlyDiscoveredBySimplifiedPlanetClass = this.db.prepare(
-      `SELECT SimplifiedPlanetClass, count(*) as numberFound FROM planet_scan_events WHERE WasDiscovered = 0 GROUP BY SimplifiedPlanetClass`
+      `SELECT SimplifiedPlanetClass, count(*) as numberFound FROM planet_scan_events WHERE WasDiscovered = 0 & Timestamp >= ? GROUP BY SimplifiedPlanetClass`
     );
   }
 
@@ -170,12 +170,22 @@ export class PlanetScanEventStore {
     return rows.map((row) => fromPlanetScanEventStoreDso(row));
   }
 
-  public async getNewlyDiscoveredEventsBySimplifiedPlanetClass(): Promise<NewPlanetaryDiscoveriesBySimplifiedClassEvent> {
+  public async getNewlyDiscoveredEventsBySimplifiedPlanetClassToday(): Promise<NewPlanetaryDiscoveriesBySimplifiedClassEvent> {
+    const today = new Date(Date.now());
+    today.setHours(0, 0, 0, 0);
+    return this.getNewlyDiscoveredEventsBySimplifiedPlanetClass(today);
+  }
+
+  public async getNewlyDiscoveredEventsBySimplifiedPlanetClass(
+    fromDate: Date = new Date(2025, 0, 0, 0, 0, 0, 0)
+  ): Promise<NewPlanetaryDiscoveriesBySimplifiedClassEvent> {
     this.logger.trace(
       "Fetching newly discovered PlanetScanEvents by simplified type"
     );
 
-    const rows = this.getNewlyDiscoveredBySimplifiedPlanetClass.all() as {
+    const rows = this.getNewlyDiscoveredBySimplifiedPlanetClass.all(
+      fromDate.getTime()
+    ) as {
       SimplifiedPlanetClass: string;
       numberFound: number;
     }[];

@@ -2,7 +2,6 @@ import pino from "pino";
 import { EDDNConnector } from "./EDDNConnector";
 import { createServerAdapter } from "@whatwg-node/server";
 import { createServer } from "http";
-import { AutoRouter } from "itty-router";
 import { Server } from "socket.io";
 import { DataStore } from "./DataStore";
 import { getRoutes } from "./routes";
@@ -62,7 +61,7 @@ eDDNConnector.eventEmitter.addHandler(
     io.emit("PlanetScanNewlyDiscovered", data);
     dataStore.planetScanEventStore.insert(data);
     const summaryUpdate =
-      await dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClass();
+      await dataStore.planetScanEventStore.getNewlyDiscoveredEventsBySimplifiedPlanetClassToday();
     io.emit("NewlyDiscoveredBySimplifiedPlanetClass", summaryUpdate);
   }
 );
