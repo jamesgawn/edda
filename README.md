@@ -1,5 +1,9 @@
 # Elite Dangerous: Deep Space Insights
 
+## Introduction
+
+A experimental project to show realtime data about new discoveries made by players in [Elite Dangerous](https://www.elitedangerous.com). The data is sourced via [EDDN](https://github.com/EDCD/EDDN), processed by a NodeJS backend, and displayed in a Vue based single page application.
+
 ## Notes
 
 Boop -> FFS Discovery Scan
