@@ -15,7 +15,6 @@ const eddlServerConnectionStore = useEDDLServerStore()
       </h2>
       <p class="mt-2 text-xs/6 text-gray-400">So Far Today</p>
     </div>
-    n
   </div>
   <div class="grid grid-cols-1 bg-gray-700/10 sm:grid-cols-2 lg:grid-cols-5">
     <div class="border-t border-white/5 px-4 py-6 sm:border-l sm:px-6 lg:px-8">
